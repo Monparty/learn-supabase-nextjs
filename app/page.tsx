@@ -1,51 +1,70 @@
-import { DeployButton } from "@/components/deploy-button";
 import { EnvVarWarning } from "@/components/env-var-warning";
 import { AuthButton } from "@/components/auth-button";
-import { Hero } from "@/components/hero";
 import { ThemeSwitcher } from "@/components/theme-switcher";
-import { ConnectSupabaseSteps } from "@/components/tutorial/connect-supabase-steps";
-import { SignUpUserSteps } from "@/components/tutorial/sign-up-user-steps";
 import { hasEnvVars } from "@/lib/utils";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { register } from "./action";
 
 export default function Home() {
-  return (
-    <main className="min-h-screen flex flex-col items-center">
-      <div className="flex-1 w-full flex flex-col gap-20 items-center">
-        <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
-          <div className="w-full max-w-5xl flex justify-between items-center p-3 px-5 text-sm">
-            <div className="flex gap-5 items-center font-semibold">
-              <Link href={"/"}>Next.js Supabase Starter</Link>
-              <div className="flex items-center gap-2">
-                <DeployButton />
-              </div>
+    return (
+        <main className="min-h-screen flex flex-col items-center">
+            <nav className="w-full max-w-5xl flex justify-between items-center p-3 px-5 text-sm">
+                <div className="flex gap-5 items-center font-semibold">
+                    <Link href={"/"}>Next.js Supabase Starter</Link>
+                </div>
+                <div className="flex gap-2">
+                    {!hasEnvVars ? <EnvVarWarning /> : <AuthButton />}
+                    <ThemeSwitcher />
+                </div>
+            </nav>
+            <div className="border p-4 rounded-lg w-2/5">
+                <h1 className="mb-2 text-xl">Register Form</h1>
+                <form action={register} className="grid gap-4">
+                    <div className="grid gap-2">
+                        <Label htmlFor="fullname">fullname</Label>
+                        <Input
+                            type="text"
+                            name="fullname"
+                            placeholder="fullname"
+                            required
+                        />
+                    </div>
+                    <div className="grid gap-2">
+                        <Label htmlFor="Email">Email</Label>
+                        <Input
+                            type="text"
+                            name="email"
+                            placeholder="Email"
+                            required
+                        />
+                    </div>
+                    <div className="grid gap-2">
+                        <Label htmlFor="fullname">Tel</Label>
+                        <Input
+                            type="number"
+                            name="tel"
+                            placeholder="Tel"
+                            required
+                        />
+                    </div>
+                    <div className="grid gap-2">
+                        <Label htmlFor="fullname">File</Label>
+                        <Input
+                            type="file"
+                            name="attachment"
+                        />
+                    </div>
+                    <Button
+                        type="submit"
+                        className="w-full bg-green-700 hover:bg-green-600"
+                    >
+                        Register
+                    </Button>
+                </form>
             </div>
-            {!hasEnvVars ? <EnvVarWarning /> : <AuthButton />}
-          </div>
-        </nav>
-        <div className="flex-1 flex flex-col gap-20 max-w-5xl p-5">
-          <Hero />
-          <main className="flex-1 flex flex-col gap-6 px-4">
-            <h2 className="font-medium text-xl mb-4">Next steps</h2>
-            {hasEnvVars ? <SignUpUserSteps /> : <ConnectSupabaseSteps />}
-          </main>
-        </div>
-
-        <footer className="w-full flex items-center justify-center border-t mx-auto text-center text-xs gap-8 py-16">
-          <p>
-            Powered by{" "}
-            <a
-              href="https://supabase.com/?utm_source=create-next-app&utm_medium=template&utm_term=nextjs"
-              target="_blank"
-              className="font-bold hover:underline"
-              rel="noreferrer"
-            >
-              Supabase
-            </a>
-          </p>
-          <ThemeSwitcher />
-        </footer>
-      </div>
-    </main>
-  );
+        </main>
+    );
 }
